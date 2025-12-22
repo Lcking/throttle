@@ -77,12 +77,12 @@ npm run build
 3. Extension Development Host will open
 4. Use Command Palette to run Throttle commands
 
-## Demo (v0.1)
+## Demo (v0.1.1)
 
-- `Throttle: Set Mode (Dev)` – set mode (Plan/Agent/Ask/Debug)
-- `Throttle: Safe Submit` – evaluate before sending
+- `Throttle: Set Mode (Dev)` – set mode and model tier (stored per workspace)
+- `Throttle: Safe Submit` – evaluate before sending using stored mode/tier
 
-> v0.2 goal: reduce manual steps (auto-detect & remember mode/tier).
+> v0.2 goal: auto-detect mode/tier with fewer manual steps.
 
 ## Roadmap (high level)
 

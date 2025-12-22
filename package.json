@@ -2,7 +2,7 @@
   "name": "throttle",
   "displayName": "Throttle",
   "description": "Mode-aware overkill detection for safe AI submit.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "local",
   "main": "dist/extension.js",
   "engines": {

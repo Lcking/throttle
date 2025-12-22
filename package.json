@@ -1,0 +1,41 @@
+{
+  "name": "throttle",
+  "displayName": "Throttle",
+  "description": "Mode-aware overkill detection for safe AI submit.",
+  "version": "0.1.0",
+  "publisher": "local",
+  "main": "dist/extension.js",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "activationEvents": [
+    "onCommand:throttle.safeSubmit",
+    "onCommand:throttle.setMode",
+    "onCommand:throttle.runSamplesCheck"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "throttle.safeSubmit",
+        "title": "Throttle: Safe Submit"
+      },
+      {
+        "command": "throttle.setMode",
+        "title": "Throttle: Set Mode (Dev)"
+      },
+      {
+        "command": "throttle.runSamplesCheck",
+        "title": "Throttle: Run Samples Check"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "watch": "tsc -w -p ."
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "@types/vscode": "^1.107.0",
+    "typescript": "^5.9.3"
+  }
+}

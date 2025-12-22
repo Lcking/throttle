@@ -1,0 +1,21 @@
+{"prompt":"Write code to implement a rate limiter in TypeScript.","mode":"plan","modelTier":"reasoning","expected":"HIT","note":"plan+reasoning+exec"}
+{"prompt":"Implement the code for a queue worker.","mode":"plan","modelTier":"reasoning","expected":"HIT","note":"plan+reasoning+exec"}
+{"prompt":"Generate code for a simple CLI that prints args.","mode":"plan","modelTier":"reasoning","expected":"HIT","note":"plan+reasoning+exec"}
+{"prompt":"Create a function that parses CSV.","mode":"plan","modelTier":"reasoning","expected":"HIT","note":"plan+reasoning+exec"}
+{"prompt":"Build a module that exports a tokenizer.","mode":"plan","modelTier":"reasoning","expected":"HIT","note":"plan+reasoning+exec"}
+{"prompt":"Write code to implement OAuth callback handling.","mode":"plan","modelTier":"reasoning","expected":"HIT","note":"plan+reasoning+exec"}
+{"prompt":"Implement a basic HTTP server in Node.js.","mode":"plan","modelTier":"reasoning","expected":"HIT","note":"plan+reasoning+exec"}
+{"prompt":"生成代码：写一个简单的排序函数。","mode":"plan","modelTier":"reasoning","expected":"HIT","note":"plan+reasoning+exec with Chinese"}
+{"prompt":"实现代码：一个最小的日志记录器。","mode":"plan","modelTier":"reasoning","expected":"HIT","note":"plan+reasoning+exec with Chinese"}
+{"prompt":"Outline the steps to refactor a legacy service.","mode":"plan","modelTier":"reasoning","expected":"NO_HIT","note":"plan+reasoning+no-code"}
+{"prompt":"Provide a high-level architecture for a chat app.","mode":"plan","modelTier":"reasoning","expected":"NO_HIT","note":"plan+reasoning+no-code"}
+{"prompt":"Explain how rate limiting works.","mode":"plan","modelTier":"reasoning","expected":"NO_HIT","note":"plan+reasoning+no-code"}
+{"prompt":"Write code to implement a cache layer.","mode":"ask","modelTier":"reasoning","expected":"NO_HIT","note":"ask+reasoning+exec"}
+{"prompt":"Generate code for a JSON validator.","mode":"ask","modelTier":"reasoning","expected":"NO_HIT","note":"ask+reasoning+exec"}
+{"prompt":"Implement a scheduler in Go.","mode":"ask","modelTier":"light","expected":"NO_HIT","note":"ask+light+exec"}
+{"prompt":"Write code to implement a retry policy.","mode":"plan","modelTier":"light","expected":"NO_HIT","note":"plan+light+exec"}
+{"prompt":"Create a function to normalize emails.","mode":"plan","modelTier":"light","expected":"NO_HIT","note":"plan+light+exec"}
+{"prompt":"Implement the algorithm for Dijkstra.","mode":"plan","modelTier":"reasoning","expected":"LOW","note":"weak exec intent"}
+{"prompt":"Write an API spec for a payment service.","mode":"plan","modelTier":"reasoning","expected":"NO_HIT","note":"plan+reasoning+spec-only"}
+{"prompt":"Build a class to model invoices.","mode":"plan","modelTier":"reasoning","expected":"HIT","note":"plan+reasoning+exec"}
+{"prompt":"Draft a postmortem template.","mode":"plan","modelTier":"reasoning","expected":"NO_HIT","note":"plan+reasoning+no-code"}

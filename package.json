@@ -2,16 +2,32 @@
   "name": "throttle",
   "displayName": "Throttle",
   "description": "Mode-aware overkill detection for safe AI submit.",
-  "version": "0.1.1",
-  "publisher": "local",
+  "version": "0.2.0",
+  "publisher": "Lcking",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lcking/throttle.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Lcking/throttle/issues"
+  },
+  "homepage": "https://github.com/Lcking/throttle#readme",
+  "icon": "assets/icon.png",
   "main": "dist/extension.js",
   "engines": {
-    "vscode": "^1.90.0"
+    "vscode": "^1.107.0"
   },
   "activationEvents": [
+    "onStartupFinished",
     "onCommand:throttle.safeSubmit",
+    "onCommand:throttle.safeSubmitClipboard",
     "onCommand:throttle.setMode",
-    "onCommand:throttle.runSamplesCheck"
+    "onCommand:throttle.quickSwitch",
+    "onCommand:throttle.resetMutedRules",
+    "onCommand:throttle.clearLog",
+    "onCommand:throttle.openLog",
+    "onCommand:throttle.clearLastHit"
   ],
   "contributes": {
     "commands": [
@@ -20,15 +36,111 @@
         "title": "Throttle: Safe Submit"
       },
       {
-        "command": "throttle.setMode",
-        "title": "Throttle: Set Mode (Dev)"
+        "command": "throttle.safeSubmitClipboard",
+        "title": "Throttle: Safe Submit (Clipboard)"
       },
       {
-        "command": "throttle.runSamplesCheck",
-        "title": "Throttle: Run Samples Check"
+        "command": "throttle.setMode",
+        "title": "Throttle: Set Mode"
+      },
+      {
+        "command": "throttle.quickSwitch",
+        "title": "Throttle: Quick Switch"
+      },
+      {
+        "command": "throttle.resetMutedRules",
+        "title": "Throttle: Reset Muted Rules"
+      },
+      {
+        "command": "throttle.clearLog",
+        "title": "Throttle: Clear Log"
+      },
+      {
+        "command": "throttle.openLog",
+        "title": "Throttle: Open Log"
+      },
+      {
+        "command": "throttle.clearLastHit",
+        "title": "Throttle: Clear Last Hit"
       }
-    ]
+    ],
+    "keybindings": [
+      {
+        "command": "throttle.safeSubmit",
+        "key": "ctrl+alt+enter",
+        "mac": "cmd+shift+enter",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "throttle.safeSubmitClipboard",
+        "key": "ctrl+enter",
+        "mac": "cmd+enter",
+        "when": "editorTextFocus"
+      }
+    ],
+    "configuration": {
+      "title": "Throttle",
+      "properties": {
+        "throttle.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Throttle checks for Safe Submit."
+        },
+        "throttle.statusBar.showMode": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show mode/tier status in the status bar."
+        },
+        "throttle.statusBar.showSubmit": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the quick submit entry in the status bar."
+        },
+        "throttle.statusBar.showLastHit": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the last hit indicator in the status bar."
+        },
+        "throttle.logging.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable lightweight logging to the Throttle output channel."
+        },
+        "throttle.logging.mode": {
+          "type": "string",
+          "default": "hit",
+          "enum": ["hit", "summary", "both"],
+          "description": "Log format: detailed hit or summary."
+        },
+        "throttle.logging.debugOnly": {
+          "type": "boolean",
+          "default": false,
+          "description": "Only emit logs in Development mode."
+        },
+        "throttle.logging.fileEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Write logs to a local file."
+        },
+        "throttle.logging.filePath": {
+          "type": "string",
+          "default": "",
+          "description": "Log file path. Relative paths are resolved from the workspace or global storage."
+        }
+      }
+    }
   },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "ai",
+    "cost",
+    "safety",
+    "prompt",
+    "copilot",
+    "cursor"
+  ],
   "scripts": {
     "build": "tsc -p .",
     "watch": "tsc -w -p ."

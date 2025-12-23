@@ -4,6 +4,7 @@ const STRONG_EXEC_PATTERNS: RegExp[] = [
   /\bwrite\s+code\b/,
   /\bgenerate\s+code\b/,
   /\bimplement\s+the\s+code\b/,
+  /\bimplement\s+(a|an)\s+(basic|simple|minimal)?\s*(http|https|grpc|rest|graphql)?\s*(function|class|module|script|cli|server|api|service|worker|queue|router|handler|client)\b/,
   /\bcreate\s+(a|an)\s+(function|class|module|script|cli)\b/,
   /\bbuild\s+(a|an)\s+(function|class|module|script|cli)\b/,
   /\bcode\s+it\b/,

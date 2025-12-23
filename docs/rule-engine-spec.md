@@ -380,6 +380,7 @@ export interface Features {
 为减少“点太多次”的摩擦，UI 侧应逐步做到：
 
 * mode/tier **默认读取当前状态**（或记忆上次选择），仅在必要时让用户更改
+* 支持 prompt 标签覆盖（如 `[mode:plan] [tier:reasoning]` / `mode=ask tier=light` / `/plan /reasoning`）
 * 命中规则才提示；不命中不打扰
 * actions 用 QuickPick 展示完整信息（避免按钮文字截断）
 
@@ -412,5 +413,4 @@ export interface Features {
 * 所有判断仅是“风险提示”，允许用户无视
 * 默认保守（宁漏报）
 * 推荐环境（分形文档纪律）是**增益项**，不是强制前置条件
-
 

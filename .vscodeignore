@@ -1,0 +1,14 @@
+**/.git/**
+**/.vscode/**
+**/node_modules/**
+**/src/**
+**/*.map
+**/*.ts
+.gitignore
+AGENTS.md
+tsconfig.json
+docs/**
+samples/**
+codex.task.md
+dist/ui/commandDiscovery.js
+dist/ui/samplesCheck.js

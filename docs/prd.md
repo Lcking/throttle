@@ -108,6 +108,7 @@ Throttle 在每次发送提示词前，基于当前 模式 与 模型等级（ti
 
 #### v0.2 — 去摩擦（Friction removal）
 - 尽可能自动识别 mode / model tier
+- 支持 prompt 标签覆盖（如 `[mode:plan] [tier:reasoning]`），便于无 UI 自动识别
 - 更好的 UI：可读的 modal/webview，避免文案被截断
 - Doc Drift Sentinel（可选）
 

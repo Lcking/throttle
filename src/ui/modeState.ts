@@ -84,3 +84,56 @@ export async function setModeCommand(
     `Throttle mode set to ${mode}. Model tier: ${finalTier}.`
   );
 }
+
+type QuickAction =
+  | { type: "mode"; value: Mode }
+  | { type: "tier"; value: ModelTier };
+
+interface QuickPickActionItem extends vscode.QuickPickItem {
+  action: QuickAction;
+}
+
+export async function quickSwitchCommand(
+  context: vscode.ExtensionContext
+): Promise<void> {
+  const currentMode = getMode(context);
+  const currentTier = getModelTier(context, currentMode);
+  const modeItems: QuickPickActionItem[] = modeOptions.map((mode) => ({
+    label: `切到 ${mode} 模式`,
+    description: mode === currentMode ? "当前" : "",
+    action: { type: "mode" as const, value: mode },
+  }));
+  const tierItems: QuickPickActionItem[] = MODEL_TIERS.map((tier) => ({
+    label: `切到 ${tier} 档`,
+    description: tier === currentTier ? "当前" : "",
+    action: { type: "tier" as const, value: tier },
+  }));
+  const items: QuickPickActionItem[] = [...modeItems, ...tierItems];
+
+  const selection = await vscode.window.showQuickPick(items, {
+    placeHolder: "快速切换模式或模型档位",
+    canPickMany: false,
+  });
+  if (!selection) {
+    return;
+  }
+
+  if (selection.action.type === "mode") {
+    const nextMode = selection.action.value;
+    if (nextMode !== currentMode) {
+      await setMode(context, nextMode);
+    }
+    void vscode.window.showInformationMessage(
+      `Throttle 模式已设置为 ${nextMode}。`
+    );
+    return;
+  }
+
+  const nextTier = selection.action.value;
+  if (nextTier !== currentTier) {
+    await setModelTier(context, nextTier);
+  }
+  void vscode.window.showInformationMessage(
+    `Throttle 模型档位已设置为 ${nextTier}。`
+  );
+}

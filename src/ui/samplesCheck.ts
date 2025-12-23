@@ -29,18 +29,37 @@ function parseSample(line: string): SampleRecord | null {
   }
 }
 
-export async function runSamplesCheck(): Promise<void> {
-  const folder = vscode.workspace.workspaceFolders?.[0];
-  if (!folder) {
-    void vscode.window.showWarningMessage("No workspace folder found.");
-    return;
+export async function runSamplesCheck(
+  context: vscode.ExtensionContext
+): Promise<void> {
+  const candidates: vscode.Uri[] = [];
+  const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
+  if (workspaceFolder?.uri) {
+    candidates.push(
+      vscode.Uri.joinPath(workspaceFolder.uri, "samples", "prompts.jsonl")
+    );
   }
-  const fileUri = vscode.Uri.joinPath(folder.uri, "samples", "prompts.jsonl");
-  let content: Uint8Array;
-  try {
-    content = await vscode.workspace.fs.readFile(fileUri);
-  } catch {
-    void vscode.window.showWarningMessage("Unable to read samples/prompts.jsonl.");
+  candidates.push(
+    vscode.Uri.joinPath(context.extensionUri, "samples", "prompts.jsonl")
+  );
+
+  let content: Uint8Array | undefined;
+  let resolvedUri: vscode.Uri | undefined;
+  for (const candidate of candidates) {
+    try {
+      content = await vscode.workspace.fs.readFile(candidate);
+      resolvedUri = candidate;
+      break;
+    } catch {
+      // Try the next candidate.
+    }
+  }
+
+  if (!content || !resolvedUri) {
+    const attempted = candidates.map((uri) => uri.fsPath).join(" | ");
+    void vscode.window.showWarningMessage(
+      `Unable to read samples/prompts.jsonl. Tried: ${attempted}`
+    );
     return;
   }
 
@@ -48,6 +67,7 @@ export async function runSamplesCheck(): Promise<void> {
   const lines = text.split(/\r?\n/);
   const output = vscode.window.createOutputChannel(OUTPUT_CHANNEL_NAME);
   output.clear();
+  output.appendLine(`Samples file: ${resolvedUri.fsPath}`);
 
   let falsePositives = 0;
   let falseNegatives = 0;

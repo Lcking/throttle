@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1
+
+- Added behavior feedback panel (badges, trends, risk hints).
+- Added engineering guard template action.
+- Added behavior stats and reroute rate indicators.
+- Added logging controls and log file actions.
+- Added optional welcome tip configuration.
+
 ## 0.2.0
 
 - Added clipboard-first Safe Submit for low-friction flow.

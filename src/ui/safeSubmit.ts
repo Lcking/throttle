@@ -11,6 +11,7 @@ import {
 } from "./modeState";
 import { isRuleMuted, muteRule } from "./ruleMuteState";
 import { logHit } from "./logging";
+import { recordBehaviorEvent } from "./behaviorStats";
 
 function isThrottleEnabled(): boolean {
   const config = vscode.workspace.getConfiguration("throttle");
@@ -24,6 +25,7 @@ const ACTION_SWITCH_ASK = "切到 Ask";
 const ACTION_SWITCH_LIGHT = "切到轻量模型";
 const ACTION_MUTE_RULE = "静音此规则";
 const ACTION_CHANGE_MODE = "切换模式...";
+const ACTION_GUARD_TEMPLATE = "工程约束模板";
 
 const MODE_TAG_PATTERNS: RegExp[] = [
   /^\s*\[mode:(plan|ask|exec)\]\s*/i,
@@ -39,6 +41,39 @@ const TIER_TAG_PATTERNS: RegExp[] = [
   /^\s*\/(light|standard|reasoning)\b\s*/i,
 ];
 
+const ENGINEERING_GUARD_KEYWORDS = [
+  "架构",
+  "边界",
+  "接口",
+  "测试",
+  "安全",
+  "权限",
+  "认证",
+  "性能",
+  "缓存",
+  "日志",
+  "监控",
+  "load",
+  "rate limit",
+  "auth",
+  "security",
+  "test",
+  "architecture",
+];
+
+function shouldSuggestGuard(prompt: string): boolean {
+  const lowered = prompt.toLowerCase();
+  return !ENGINEERING_GUARD_KEYWORDS.some((word) => lowered.includes(word));
+}
+
+const ENGINEERING_GUARD_TEMPLATE = [
+  "工程约束：",
+  "1) 模块边界与接口定义",
+  "2) 安全与权限策略",
+  "3) 性能与扩展性考虑",
+  "4) 测试策略与回归范围",
+  "5) 观测性（日志/监控）",
+].join("\n");
 function extractOverrides(prompt: string): {
   prompt: string;
   mode?: Mode;
@@ -188,6 +223,11 @@ async function runSafeSubmitWithPrompt(
     );
     await setLastHit(context, first.ruleId);
     await markRuleSeen(context, first.ruleId);
+    recordBehaviorEvent(context, {
+      ts: Date.now(),
+      type: "hit",
+      ruleId: first.ruleId,
+    });
   }
   void vscode.window.setStatusBarMessage(
     "Throttle：检测到 Plan + 高推理 + 执行意图",
@@ -201,6 +241,7 @@ async function runSafeSubmitWithPrompt(
         `置信度：${confidence.toFixed(2)}`,
       ].join("\n")
     : "继续或切换模式/模型";
+  const suggestGuard = shouldSuggestGuard(overrides.prompt);
   type ActionItem = vscode.QuickPickItem & { action: string };
   const continueItem: ActionItem = showDetail
     ? {
@@ -233,6 +274,15 @@ async function runSafeSubmitWithPrompt(
       description: "不再提示此规则",
       action: ACTION_MUTE_RULE,
     },
+    ...(suggestGuard
+      ? [
+          {
+            label: ACTION_GUARD_TEMPLATE,
+            description: "补齐工程约束检查",
+            action: ACTION_GUARD_TEMPLATE,
+          },
+        ]
+      : []),
     {
       label: ACTION_CHANGE_MODE,
       description: "手动选择模式",
@@ -251,6 +301,7 @@ async function runSafeSubmitWithPrompt(
   switch (selection.action) {
     case ACTION_SWITCH_ASK: {
       await setMode(context, "ask");
+      recordBehaviorEvent(context, { ts: Date.now(), type: "switch_ask" });
       void vscode.window.showInformationMessage(
         "已切换到 Ask 模式（演示）。"
       );
@@ -258,6 +309,7 @@ async function runSafeSubmitWithPrompt(
     }
     case ACTION_SWITCH_LIGHT: {
       await setModelTier(context, "light");
+      recordBehaviorEvent(context, { ts: Date.now(), type: "switch_light" });
       void vscode.window.showInformationMessage(
         "已切换到轻量模型档位（演示）。"
       );
@@ -266,6 +318,11 @@ async function runSafeSubmitWithPrompt(
     case ACTION_MUTE_RULE: {
       if (first) {
         await muteRule(context, first.ruleId);
+        recordBehaviorEvent(context, {
+          ts: Date.now(),
+          type: "mute_rule",
+          ruleId: first.ruleId,
+        });
       }
       void vscode.window.showInformationMessage(
         "已静音此规则，可用“Throttle: Reset Muted Rules”恢复。"
@@ -281,12 +338,25 @@ async function runSafeSubmitWithPrompt(
         return;
       }
       await setMode(context, newMode as Mode);
+      recordBehaviorEvent(context, { ts: Date.now(), type: "change_mode" });
       void vscode.window.showInformationMessage(
         `Throttle 模式已设置为 ${newMode}。`
       );
       break;
     }
+    case ACTION_GUARD_TEMPLATE: {
+      await vscode.env.clipboard.writeText(ENGINEERING_GUARD_TEMPLATE);
+      recordBehaviorEvent(context, {
+        ts: Date.now(),
+        type: "guard_template",
+      });
+      void vscode.window.showInformationMessage(
+        "工程约束模板已复制到剪贴板。"
+      );
+      break;
+    }
     default:
+      recordBehaviorEvent(context, { ts: Date.now(), type: "continue" });
       break;
   }
 }

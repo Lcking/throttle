@@ -13,6 +13,8 @@ import {
 import { clearMutedRules } from "./ui/ruleMuteState";
 import { getMutedRules } from "./ui/ruleMuteState";
 import { clearLogFile, getLogFilePath, isLoggingActive } from "./ui/logging";
+import { clearBehaviorEvents, getBehaviorStats } from "./ui/behaviorStats";
+import { showBehaviorPanel } from "./ui/behaviorPanel";
 
 function getStatusBarSettings(): {
   showMode: boolean;
@@ -41,10 +43,12 @@ function updateStatusBar(
   const mutedCount = getMutedRules(context).length;
   const mutedText = mutedCount > 0 ? ` 静音${mutedCount}` : "";
   const loggingText = isLoggingActive(context) ? " 日志" : "";
-  const lastHit = context.workspaceState.get<string>("throttle.lastHit");
-  const lastHitShort = lastHit ? lastHit.replace(/^R/, "") : "";
+  const stats = getBehaviorStats(context);
+  const rerouteRate = Math.round(stats.last7DaysRerouteRate * 100);
   const lastHitText =
-    settings.showLastHit && lastHitShort ? ` 命中:${lastHitShort}` : "";
+    settings.showLastHit && stats.last7Days.hit > 0
+      ? ` 改道${rerouteRate}%`
+      : "";
   item.text = `Throttle ${mode}/${tier}${mutedText}${loggingText}${lastHitText}`;
   item.tooltip = "点击快速切换。";
   item.show();
@@ -147,6 +151,21 @@ export function activate(context: vscode.ExtensionContext): void {
       updateStatusBar(context, statusItem);
     }
   );
+  const showBehaviorDisposable = vscode.commands.registerCommand(
+    "throttle.showBehaviorPanel",
+    () => {
+      output.appendLine("Command: throttle.showBehaviorPanel");
+      showBehaviorPanel(context);
+    }
+  );
+  const clearBehaviorDisposable = vscode.commands.registerCommand(
+    "throttle.clearBehaviorStats",
+    async () => {
+      output.appendLine("Command: throttle.clearBehaviorStats");
+      clearBehaviorEvents(context);
+      void vscode.window.showInformationMessage("已清空行为统计。");
+    }
+  );
   const openLogDisposable = vscode.commands.registerCommand(
     "throttle.openLog",
     async () => {
@@ -174,6 +193,17 @@ export function activate(context: vscode.ExtensionContext): void {
     }
   });
 
+  const welcomeEnabled = vscode.workspace
+    .getConfiguration("throttle")
+    .get<boolean>("welcome.enabled", true);
+  const hasSeenWelcome = context.globalState.get<boolean>("throttle.welcome");
+  if (welcomeEnabled && !hasSeenWelcome) {
+    void vscode.window.showInformationMessage(
+      "Throttle：建议先 Spec → 再 Plan → 最后 Exec（可在行为面板查看引导）。"
+    );
+    void context.globalState.update("throttle.welcome", true);
+  }
+
   context.subscriptions.push(
     output,
     statusItem,
@@ -186,6 +216,8 @@ export function activate(context: vscode.ExtensionContext): void {
     clearLogDisposable,
     openLogDisposable,
     clearLastHitDisposable,
+    showBehaviorDisposable,
+    clearBehaviorDisposable,
     configDisposable
   );
 }

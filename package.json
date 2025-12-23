@@ -2,7 +2,7 @@
   "name": "throttle",
   "displayName": "Throttle",
   "description": "Mode-aware overkill detection for safe AI submit.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "Lcking",
   "license": "MIT",
   "repository": {
@@ -27,7 +27,9 @@
     "onCommand:throttle.resetMutedRules",
     "onCommand:throttle.clearLog",
     "onCommand:throttle.openLog",
-    "onCommand:throttle.clearLastHit"
+    "onCommand:throttle.clearLastHit",
+    "onCommand:throttle.showBehaviorPanel",
+    "onCommand:throttle.clearBehaviorStats"
   ],
   "contributes": {
     "commands": [
@@ -62,6 +64,14 @@
       {
         "command": "throttle.clearLastHit",
         "title": "Throttle: Clear Last Hit"
+      },
+      {
+        "command": "throttle.showBehaviorPanel",
+        "title": "Throttle: Behavior Panel"
+      },
+      {
+        "command": "throttle.clearBehaviorStats",
+        "title": "Throttle: Clear Behavior Stats"
       }
     ],
     "keybindings": [
@@ -126,6 +136,16 @@
           "type": "string",
           "default": "",
           "description": "Log file path. Relative paths are resolved from the workspace or global storage."
+        },
+        "throttle.behavior.targetRerouteRate": {
+          "type": "number",
+          "default": 30,
+          "description": "Target reroute rate percentage shown in the behavior panel."
+        },
+        "throttle.welcome.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the one-time welcome tip."
         }
       }
     }

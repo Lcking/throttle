@@ -91,6 +91,8 @@ npm run build
 - `Throttle: Clear Log` – clear log file
 - `Throttle: Open Log` – open log file
 - `Throttle: Clear Last Hit` – clear last hit indicator
+- `Throttle: Behavior Panel` – show behavior feedback panel
+- `Throttle: Clear Behavior Stats` – clear behavior stats
 
 ## Settings
 
@@ -103,6 +105,13 @@ npm run build
 - `throttle.logging.debugOnly`: only log in Development mode
 - `throttle.logging.fileEnabled`: write logs to a local file
 - `throttle.logging.filePath`: log file path (optional)
+- `throttle.behavior.targetRerouteRate`: target reroute rate (%) shown in panel
+- `throttle.welcome.enabled`: show the one-time welcome tip
+
+## Engineering Guard (optional)
+
+当检测到执行意图但缺少“架构/安全/测试/性能”等关键词时，会提供“工程约束模板”动作（不阻断）。  
+点击后模板会复制到剪贴板，便于补齐工程约束。
 
 Prompt tags (optional) override stored mode/tier:
 ```
@@ -205,6 +214,33 @@ flowchart TB
 - **改道次数**：从提醒中切到 Ask/轻量的次数
 
 这能更直接地帮助用户形成“自我优化”的闭环。
+
+## Vibe Coding 反差视角（新人 vs 老手）
+
+**新人高风险模式**
+- 过度自信 → 范围膨胀 → 坑越挖越大
+- 过度并行 → 上下文紊乱 → 指令质量下降
+
+**老手稳态策略**
+- 先判断项目是否值得做（范围收敛）
+- 并行限制 1–2 个项目（上下文完整）
+- 同项目用 worktree 并行 feature（集中 review/merge）
+- 核心素养是工程管理（需求/架构/集成/风险）
+
+**三条落地原则**
+1) 限并行  
+2) 先 Spec  
+3) 再执行  
+
+## 用户画像与使用路径
+
+**新手（高风险）**
+- 主要问题：范围膨胀 / 并行过多 / Plan 阶段直接执行
+- 使用方式：看“行为面板”的改道率与风险提示，优先把改道率拉到目标值
+
+**老手（稳态）**
+- 主要问题：高效节奏下漏掉工程约束
+- 使用方式：关注“工程约束模板”是否被补齐，减少隐性风险
 
 ## One-Page Quick Start
 

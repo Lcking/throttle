@@ -19,6 +19,9 @@ export interface NormalizedInput {
 
 export interface PromptFeatures {
   execIntentScore: number;
+  loadSignals: string[];
+  authoritySignals: string[];
+  noiseSignals: string[];
 }
 
 export interface RuleResult {
@@ -47,4 +50,9 @@ export interface ThrottleConfig {
   reasoningTiers: ModelTier[];
   reasoningModelAllowlist: string[];
   ruleThresholds: RuleThresholds;
+  governanceKeywords: {
+    load: string[];
+    authority: string[];
+    noise: string[];
+  };
 }

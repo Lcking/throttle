@@ -1,4 +1,4 @@
-import { PromptFeatures } from "./types";
+import { PromptFeatures, ThrottleConfig } from "./types";
 
 const STRONG_EXEC_PATTERNS: RegExp[] = [
   /\bwrite\s+code\b/,
@@ -19,16 +19,44 @@ const WEAK_EXEC_PATTERNS: RegExp[] = [
   /实现/,
 ];
 
-export function extractPromptFeatures(prompt: string): PromptFeatures {
+function collectMatches(prompt: string, keywords: string[]): string[] {
+  const matches: string[] = [];
+  for (const keyword of keywords) {
+    if (prompt.includes(keyword)) {
+      matches.push(keyword);
+    }
+  }
+  return matches;
+}
+
+export function extractPromptFeatures(
+  prompt: string,
+  config: ThrottleConfig
+): PromptFeatures {
   const strongHit = STRONG_EXEC_PATTERNS.some((pattern) => pattern.test(prompt));
   if (strongHit) {
-    return { execIntentScore: 0.9 };
+    return {
+      execIntentScore: 0.9,
+      loadSignals: collectMatches(prompt, config.governanceKeywords.load),
+      authoritySignals: collectMatches(prompt, config.governanceKeywords.authority),
+      noiseSignals: collectMatches(prompt, config.governanceKeywords.noise),
+    };
   }
 
   const weakHit = WEAK_EXEC_PATTERNS.some((pattern) => pattern.test(prompt));
   if (weakHit) {
-    return { execIntentScore: 0.5 };
+    return {
+      execIntentScore: 0.5,
+      loadSignals: collectMatches(prompt, config.governanceKeywords.load),
+      authoritySignals: collectMatches(prompt, config.governanceKeywords.authority),
+      noiseSignals: collectMatches(prompt, config.governanceKeywords.noise),
+    };
   }
 
-  return { execIntentScore: 0 };
+  return {
+    execIntentScore: 0,
+    loadSignals: collectMatches(prompt, config.governanceKeywords.load),
+    authoritySignals: collectMatches(prompt, config.governanceKeywords.authority),
+    noiseSignals: collectMatches(prompt, config.governanceKeywords.noise),
+  };
 }

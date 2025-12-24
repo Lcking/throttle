@@ -2,6 +2,9 @@ import { defaultConfig } from "../config/defaultConfig";
 import { extractPromptFeatures } from "./features";
 import { normalizePrompt } from "./normalize";
 import { R001_PLAN_EXEC_REASONING } from "./rules/R001_plan_exec_reasoning";
+import { R010_LOAD_OVERFLOW } from "./rules/R010_load_overflow";
+import { R011_AUTHORITY_OVERREACH } from "./rules/R011_authority_overreach";
+import { R012_NOISE_OVERLOAD } from "./rules/R012_noise_overload";
 import {
   ModelInfo,
   RuleContext,
@@ -9,7 +12,12 @@ import {
   ThrottleConfig,
 } from "./types";
 
-const RULES = [R001_PLAN_EXEC_REASONING];
+const RULES = [
+  R001_PLAN_EXEC_REASONING,
+  R010_LOAD_OVERFLOW,
+  R011_AUTHORITY_OVERREACH,
+  R012_NOISE_OVERLOAD,
+];
 
 function isReasoningModel(model: ModelInfo, config: ThrottleConfig): boolean {
   if (model.id && config.reasoningModelAllowlist.includes(model.id)) {
@@ -23,7 +31,7 @@ export function runRuleEngine(
   config: ThrottleConfig = defaultConfig
 ): RuleResult[] {
   const normalized = normalizePrompt(context.prompt);
-  const features = extractPromptFeatures(normalized.prompt);
+  const features = extractPromptFeatures(normalized.prompt, config);
   const reasoning = isReasoningModel(context.model, config);
   const effectiveContext: RuleContext = {
     ...context,

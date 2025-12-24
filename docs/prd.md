@@ -14,6 +14,26 @@ Throttle 是 AI IDE 聊天中的一层**运行时行为感知（runtime behavior
 - 专注 **调用前（pre-call）**的检测 + 冷静提示
 - 优先优化 低摩擦 与 低误报
 
+## 设计哲学（Design Philosophy）
+
+**Throttle 不是工具库，而是运行时治理层（Runtime Governance Layer）**。
+
+在 “Spec / Skills / MCP / Subagent” 的生态里，它们分别负责：
+- Spec / Skills：定义边界与触发条件（静态治理）
+- MCP：接入能力与工具（权限治理）
+- Subagent：隔离噪声与过程（隔离治理）
+
+Throttle 的角色是**运行时治理**：在真实行为发生前提醒“是否正在用错误的权限/上下文/模式去做事”。
+这意味着它不与工具体系竞争，而是为工具体系提供“交通规则”。
+
+三个关键风险变量（可观测、可治理）：
+1) **Load**：上下文/说明书过载导致成本失控
+2) **Authority**：权限过大导致误改与越权
+3) **Noise**：高噪声过程污染主线程导致推理漂移
+
+产品目标不是“省 token”，而是**维持节奏与可控性**：
+把“讨论 → 执行 → 验证 → 总结”保持在正确的车道上。
+
 ## 目标用户（Target users）
 - Cursor 重度用户（Pro/Ultra），频繁在 Plan / Agent / Ask / Debug 间切换
 - 偏“vibe coding/快节奏循环”的用户，对“多点几次”高度敏感

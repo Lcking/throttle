@@ -2,6 +2,9 @@ import * as vscode from "vscode";
 
 export type BehaviorEventType =
   | "hit"
+  | "load"
+  | "authority"
+  | "noise"
   | "continue"
   | "switch_ask"
   | "switch_light"
@@ -46,6 +49,9 @@ function filterSince(events: BehaviorEvent[], sinceMs: number): BehaviorEvent[] 
 function countByType(events: BehaviorEvent[]): Record<BehaviorEventType, number> {
   const counts: Record<BehaviorEventType, number> = {
     hit: 0,
+    load: 0,
+    authority: 0,
+    noise: 0,
     continue: 0,
     switch_ask: 0,
     switch_light: 0,
@@ -71,6 +77,8 @@ export function getBehaviorStats(
   previous7DaysRerouteRate: number;
   rerouteRateDelta: number;
   badges: BadgeProgress[];
+  governanceRate: number;
+  governanceAdoptionRate: number;
 } {
   const events = getBehaviorEvents(context);
   const totals = countByType(events);
@@ -87,6 +95,8 @@ export function getBehaviorStats(
   const previous7DaysRerouteRate = computeRerouteRate(previous7Days);
   const rerouteRateDelta = last7DaysRerouteRate - previous7DaysRerouteRate;
   const badges = getBadges(last7Days, totals, last7DaysRerouteRate);
+  const governanceRate = computeGovernanceRate(last7Days);
+  const governanceAdoptionRate = computeGovernanceAdoptionRate(last7Days);
   return {
     totals,
     last7Days,
@@ -97,6 +107,8 @@ export function getBehaviorStats(
     previous7DaysRerouteRate,
     rerouteRateDelta,
     badges,
+    governanceRate,
+    governanceAdoptionRate,
   };
 }
 
@@ -109,6 +121,28 @@ function computeRerouteRate(
   }
   const reroutes = stats.switch_ask + stats.switch_light + stats.change_mode;
   return reroutes / hits;
+}
+
+function computeGovernanceRate(
+  stats: Record<BehaviorEventType, number>
+): number {
+  const hits = stats.hit;
+  if (!hits) {
+    return 0;
+  }
+  const governanceHits = stats.load + stats.authority + stats.noise;
+  return governanceHits / hits;
+}
+
+function computeGovernanceAdoptionRate(
+  stats: Record<BehaviorEventType, number>
+): number {
+  const governanceHits = stats.load + stats.authority + stats.noise;
+  if (!governanceHits) {
+    return 0;
+  }
+  const actions = stats.switch_ask + stats.switch_light + stats.change_mode;
+  return actions / governanceHits;
 }
 
 export interface BadgeProgress {

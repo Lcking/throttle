@@ -108,6 +108,11 @@ npm run build
 - `throttle.behavior.targetRerouteRate`: target reroute rate (%) shown in panel
 - `throttle.welcome.enabled`: show the one-time welcome tip
 
+## Governance Metrics (v0.3)
+
+- 治理命中率：Load/Authority/Noise 命中次数 ÷ 总命中次数
+- 采用率：治理类命中后采用切换动作的比例
+
 ## Engineering Guard (optional)
 
 当检测到执行意图但缺少“架构/安全/测试/性能”等关键词时，会提供“工程约束模板”动作（不阻断）。  
@@ -145,27 +150,6 @@ mode=ask tier=light Explain this function.
 - Mute rule, repeat → no warning
 - `Throttle: Reset Muted Rules` restores warning
 
-## Publishing (VS Code Marketplace)
-
-1) Install vsce:
-```bash
-npm i -g @vscode/vsce
-```
-
-2) Login:
-```bash
-vsce login Lcking
-```
-
-3) Package (optional):
-```bash
-vsce package
-```
-
-4) Publish:
-```bash
-vsce publish
-```
 
 ## Quick Start (30s)
 
@@ -214,6 +198,19 @@ flowchart TB
 - **改道次数**：从提醒中切到 Ask/轻量的次数
 
 这能更直接地帮助用户形成“自我优化”的闭环。
+
+## 为什么 Throttle 不是多余插件
+
+很多插件只展示 token 消耗，但那只是结果；Throttle 关注的是**运行时行为**：
+
+- **提醒发生在成本发生前**（Pre-call）
+- **给出可执行替代路径**（切模式/切模型/静音）
+- **用行为反馈而不是账单驱动优化**（改道率、趋势、徽章）
+
+它的价值不是“让 AI 更聪明”，而是**让你更少在错误阶段使用错误预算**：
+当你该交互时别长思考、该收敛时别扩张、该轻量时别重型。
+
+Throttle 是运行时治理层，不替代 spec/skills，而是让它们在正确节奏中发挥作用。
 
 ## Vibe Coding 反差视角（新人 vs 老手）
 

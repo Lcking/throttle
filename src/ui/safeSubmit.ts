@@ -228,6 +228,15 @@ async function runSafeSubmitWithPrompt(
       type: "hit",
       ruleId: first.ruleId,
     });
+    if (first.ruleId === "R010_LOAD_OVERFLOW") {
+      recordBehaviorEvent(context, { ts: Date.now(), type: "load" });
+    }
+    if (first.ruleId === "R011_AUTHORITY_OVERREACH") {
+      recordBehaviorEvent(context, { ts: Date.now(), type: "authority" });
+    }
+    if (first.ruleId === "R012_NOISE_OVERLOAD") {
+      recordBehaviorEvent(context, { ts: Date.now(), type: "noise" });
+    }
   }
   void vscode.window.setStatusBarMessage(
     "Throttle：检测到 Plan + 高推理 + 执行意图",

@@ -2,7 +2,7 @@
   "name": "throttle",
   "displayName": "Throttle",
   "description": "Mode-aware overkill detection for safe AI submit.",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "publisher": "Lcking",
   "license": "MIT",
   "repository": {

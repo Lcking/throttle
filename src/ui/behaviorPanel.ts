@@ -107,6 +107,8 @@ export function showBehaviorPanel(
   const stats = getBehaviorStats(context);
   const reroute7d = Math.round(stats.last7DaysRerouteRate * 100);
   const rerouteTotal = Math.round(stats.totalsRerouteRate * 100);
+  const governanceRate = Math.round(stats.governanceRate * 100);
+  const governanceAdoption = Math.round(stats.governanceAdoptionRate * 100);
   const delta = Math.round(stats.rerouteRateDelta * 100);
   const deltaText = delta === 0 ? "—" : delta > 0 ? `+${delta}%` : `${delta}%`;
   const target = Math.max(
@@ -164,6 +166,7 @@ export function showBehaviorPanel(
       <h1>Throttle 行为反馈</h1>
       <div class="meta">记录数：${stats.totalEvents}（最近 7 天 & 总计）</div>
       <div class="meta">改道率：${reroute7d}% / ${rerouteTotal}%</div>
+      <div class="meta">治理命中率：${governanceRate}% · 采用率：${governanceAdoption}%</div>
       <div class="meta">趋势：${deltaText}（对比上周）｜目标：${target}%</div>
       <div class="grid">
         ${renderTable("最近 7 天", stats.last7Days)}

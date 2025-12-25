@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.0
+
+- Remember mode/tier per workspace with first-time prompts.
+- Improved nudge UI with QuickPick and default Continue.
+- Added cooldown + dedupe + low-confidence suppression for nudges.
+- Added mismatch axes (Thinking vs Doing) messaging.
+- Added Manage Mutes with workspace/global scope.
+- Added Doc Drift Sentinel (optional, pre-call only).
+- Added Preflight command for current state overview.
+- Behavior panel now adapts to theme and locale (EN/中文).
+
 ## 0.3.0
 
 - Added runtime governance signals: Load, Authority, Noise.

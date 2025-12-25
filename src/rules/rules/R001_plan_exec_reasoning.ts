@@ -17,7 +17,8 @@ export const R001_PLAN_EXEC_REASONING: RuleDefinition = {
       ruleId: "R001_PLAN_EXEC_REASONING",
       confidence: features.execIntentScore,
       message:
-        "This looks like execution work in Plan mode with a reasoning model.",
+        "This looks like doing/execution work while in Plan with a reasoning model.",
+      mismatchAxis: "reasoning_vs_doing",
     };
   },
 };

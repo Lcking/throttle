@@ -11,14 +11,20 @@ function getDefaultTier(mode: Mode): ModelTier {
 }
 
 export function getMode(context: vscode.ExtensionContext): Mode {
-  const stored = context.globalState.get<Mode>(MODE_STATE_KEY);
+  const stored = context.workspaceState.get<Mode>(MODE_STATE_KEY);
   return stored ?? defaultConfig.defaultMode;
+}
+
+export function getStoredMode(
+  context: vscode.ExtensionContext
+): Mode | undefined {
+  return context.workspaceState.get<Mode>(MODE_STATE_KEY);
 }
 
 export function getStoredModelTier(
   context: vscode.ExtensionContext
 ): ModelTier | undefined {
-  return context.globalState.get<ModelTier>(MODEL_TIER_KEY);
+  return context.workspaceState.get<ModelTier>(MODEL_TIER_KEY);
 }
 
 export function getModelTier(
@@ -33,14 +39,14 @@ export async function setMode(
   context: vscode.ExtensionContext,
   mode: Mode
 ): Promise<void> {
-  await context.globalState.update(MODE_STATE_KEY, mode);
+  await context.workspaceState.update(MODE_STATE_KEY, mode);
 }
 
 export async function setModelTier(
   context: vscode.ExtensionContext,
   tier: ModelTier
 ): Promise<void> {
-  await context.globalState.update(MODEL_TIER_KEY, tier);
+  await context.workspaceState.update(MODEL_TIER_KEY, tier);
 }
 
 export async function setModeCommand(

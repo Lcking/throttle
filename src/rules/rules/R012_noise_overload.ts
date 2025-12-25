@@ -17,6 +17,7 @@ export const R012_NOISE_OVERLOAD: RuleDefinition = {
       ruleId: "R012_NOISE_OVERLOAD",
       confidence,
       message: "Possible noise overload: high-noise capture requested.",
+      mismatchAxis: "noise_pollution",
     };
   },
 };

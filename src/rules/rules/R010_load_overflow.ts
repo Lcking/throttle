@@ -20,6 +20,7 @@ export const R010_LOAD_OVERFLOW: RuleDefinition = {
       ruleId: "R010_LOAD_OVERFLOW",
       confidence,
       message: "Possible load overflow: large context request before execution.",
+      mismatchAxis: "mode_mismatch",
     };
   },
 };

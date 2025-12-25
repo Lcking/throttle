@@ -28,7 +28,13 @@ export interface RuleResult {
   ruleId: string;
   confidence: number;
   message: string;
+  mismatchAxis: MismatchAxis;
 }
+
+export type MismatchAxis =
+  | "mode_mismatch"
+  | "reasoning_vs_doing"
+  | "noise_pollution";
 
 export type RuleEvaluator = (
   context: RuleContext,

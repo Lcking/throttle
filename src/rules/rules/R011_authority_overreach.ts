@@ -17,6 +17,7 @@ export const R011_AUTHORITY_OVERREACH: RuleDefinition = {
       ruleId: "R011_AUTHORITY_OVERREACH",
       confidence,
       message: "Possible authority overreach: high-permission tools requested.",
+      mismatchAxis: "mode_mismatch",
     };
   },
 };

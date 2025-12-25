@@ -10,11 +10,12 @@ import {
   quickSwitchCommand,
   setModeCommand,
 } from "./ui/modeState";
-import { clearMutedRules } from "./ui/ruleMuteState";
+import { clearMutedRules, manageMutesCommand } from "./ui/ruleMuteState";
 import { getMutedRules } from "./ui/ruleMuteState";
 import { clearLogFile, getLogFilePath, isLoggingActive } from "./ui/logging";
 import { clearBehaviorEvents, getBehaviorStats } from "./ui/behaviorStats";
 import { showBehaviorPanel } from "./ui/behaviorPanel";
+import { showPreflight } from "./ui/preflight";
 
 function getStatusBarSettings(): {
   showMode: boolean;
@@ -127,6 +128,15 @@ export function activate(context: vscode.ExtensionContext): void {
       updateSubmitItem(submitItem);
     }
   );
+  const manageMutesDisposable = vscode.commands.registerCommand(
+    "throttle.manageMutes",
+    async () => {
+      output.appendLine("Command: throttle.manageMutes");
+      await manageMutesCommand(context);
+      updateStatusBar(context, statusItem);
+      updateSubmitItem(submitItem);
+    }
+  );
   const clearLogDisposable = vscode.commands.registerCommand(
     "throttle.clearLog",
     async () => {
@@ -156,6 +166,13 @@ export function activate(context: vscode.ExtensionContext): void {
     () => {
       output.appendLine("Command: throttle.showBehaviorPanel");
       showBehaviorPanel(context);
+    }
+  );
+  const preflightDisposable = vscode.commands.registerCommand(
+    "throttle.preflight",
+    async () => {
+      output.appendLine("Command: throttle.preflight");
+      await showPreflight(context);
     }
   );
   const clearBehaviorDisposable = vscode.commands.registerCommand(
@@ -218,6 +235,8 @@ export function activate(context: vscode.ExtensionContext): void {
     clearLastHitDisposable,
     showBehaviorDisposable,
     clearBehaviorDisposable,
+    manageMutesDisposable,
+    preflightDisposable,
     configDisposable
   );
 }

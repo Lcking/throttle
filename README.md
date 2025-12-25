@@ -3,6 +3,14 @@
 > A runtime co-pilot for AI usage in your IDE.  
 > 一个运行时“副驾驶”：在你即将踩深油门之前，提醒你可能在错误的模式/模型上过度加速。
 
+Throttle 是 IDE 里的 **pre-call co-pilot**：在你发送给 AI 之前，判断 mode × intent × budget/tier 是否错配。  
+它不阻断、不评判，默认 Continue，只在高置信度 + 高代价组合下提醒。
+
+30 秒 Demo：Plan + Opus（reasoning）+ “实现/写代码” → 弹出 Continue / 切模式 / 降档位 / 静音。  
+切到 Ask 或 light 后同样提示词不再提醒。
+
+Throttle 不替代 specs / skills / subagent。它是运行时治理层，确保你的节奏更稳、更可控。
+
 ## What is Throttle?
 
 Throttle **不是** AI 助手，也不会替你做决定。
@@ -87,12 +95,14 @@ npm run build
 - Default keybinding: `Cmd+Shift+Enter` on macOS, `Ctrl+Alt+Enter` elsewhere (editor focus)
 - Clipboard keybinding: `Cmd+Enter` on macOS, `Ctrl+Enter` elsewhere (editor focus)
 - `Throttle: Reset Muted Rules` – clear muted rules
+- `Throttle: Manage Mutes` – review and unmute rules (workspace/global)
 - `Throttle: Quick Switch` – quick pick to switch mode or model tier
 - `Throttle: Clear Log` – clear log file
 - `Throttle: Open Log` – open log file
 - `Throttle: Clear Last Hit` – clear last hit indicator
 - `Throttle: Behavior Panel` – show behavior feedback panel
 - `Throttle: Clear Behavior Stats` – clear behavior stats
+- `Throttle: Preflight` – show current mode/tier, mutes, cooldowns
 
 ## Settings
 
@@ -107,6 +117,7 @@ npm run build
 - `throttle.logging.filePath`: log file path (optional)
 - `throttle.behavior.targetRerouteRate`: target reroute rate (%) shown in panel
 - `throttle.welcome.enabled`: show the one-time welcome tip
+- `throttle.docDrift.enabled`: enable Doc Drift Sentinel (optional)
 
 ## Governance Metrics (v0.3)
 

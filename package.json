@@ -2,7 +2,7 @@
   "name": "throttle",
   "displayName": "Throttle",
   "description": "Mode-aware overkill detection for safe AI submit.",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "publisher": "Lcking",
   "license": "MIT",
   "repository": {
@@ -25,11 +25,13 @@
     "onCommand:throttle.setMode",
     "onCommand:throttle.quickSwitch",
     "onCommand:throttle.resetMutedRules",
+    "onCommand:throttle.manageMutes",
     "onCommand:throttle.clearLog",
     "onCommand:throttle.openLog",
     "onCommand:throttle.clearLastHit",
     "onCommand:throttle.showBehaviorPanel",
-    "onCommand:throttle.clearBehaviorStats"
+    "onCommand:throttle.clearBehaviorStats",
+    "onCommand:throttle.preflight"
   ],
   "contributes": {
     "commands": [
@@ -54,6 +56,10 @@
         "title": "Throttle: Reset Muted Rules"
       },
       {
+        "command": "throttle.manageMutes",
+        "title": "Throttle: Manage Mutes"
+      },
+      {
         "command": "throttle.clearLog",
         "title": "Throttle: Clear Log"
       },
@@ -72,6 +78,10 @@
       {
         "command": "throttle.clearBehaviorStats",
         "title": "Throttle: Clear Behavior Stats"
+      },
+      {
+        "command": "throttle.preflight",
+        "title": "Throttle: Preflight"
       }
     ],
     "keybindings": [
@@ -119,7 +129,11 @@
         "throttle.logging.mode": {
           "type": "string",
           "default": "hit",
-          "enum": ["hit", "summary", "both"],
+          "enum": [
+            "hit",
+            "summary",
+            "both"
+          ],
           "description": "Log format: detailed hit or summary."
         },
         "throttle.logging.debugOnly": {
@@ -146,6 +160,11 @@
           "type": "boolean",
           "default": true,
           "description": "Show the one-time welcome tip."
+        },
+        "throttle.docDrift.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable Doc Drift Sentinel (optional pre-call reminders)."
         }
       }
     }
@@ -168,6 +187,7 @@
   "devDependencies": {
     "@types/node": "^25.0.3",
     "@types/vscode": "^1.107.0",
+    "@vscode/vsce": "^3.7.1",
     "typescript": "^5.9.3"
   }
 }

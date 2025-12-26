@@ -1,4 +1,4 @@
-{"prompt":"Write code to implement a rate limiter in TypeScript.","mode":"plan","modelTier":"reasoning","expected":"HIT","note":"plan+reasoning+exec"}
+{"prompt":"Write code to implement a retry queue in TypeScript.","mode":"plan","modelTier":"reasoning","expected":"HIT","note":"plan+reasoning+exec"}
 {"prompt":"Implement the code for a queue worker.","mode":"plan","modelTier":"reasoning","expected":"HIT","note":"plan+reasoning+exec"}
 {"prompt":"Generate code for a simple CLI that prints args.","mode":"plan","modelTier":"reasoning","expected":"HIT","note":"plan+reasoning+exec"}
 {"prompt":"Create a function that parses CSV.","mode":"plan","modelTier":"reasoning","expected":"HIT","note":"plan+reasoning+exec"}

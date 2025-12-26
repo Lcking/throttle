@@ -16,6 +16,7 @@ import { clearLogFile, getLogFilePath, isLoggingActive } from "./ui/logging";
 import { clearBehaviorEvents, getBehaviorStats } from "./ui/behaviorStats";
 import { showBehaviorPanel } from "./ui/behaviorPanel";
 import { showPreflight } from "./ui/preflight";
+import { maybeShowOnboarding, runQuickTour } from "./ui/onboarding";
 
 function getStatusBarSettings(): {
   showMode: boolean;
@@ -202,6 +203,13 @@ export function activate(context: vscode.ExtensionContext): void {
       }
     }
   );
+  const quickTourDisposable = vscode.commands.registerCommand(
+    "throttle.quickTour",
+    async () => {
+      output.appendLine("Command: throttle.quickTour");
+      await runQuickTour(context, output);
+    }
+  );
 
   const configDisposable = vscode.workspace.onDidChangeConfiguration((event) => {
     if (event.affectsConfiguration("throttle")) {
@@ -210,16 +218,7 @@ export function activate(context: vscode.ExtensionContext): void {
     }
   });
 
-  const welcomeEnabled = vscode.workspace
-    .getConfiguration("throttle")
-    .get<boolean>("welcome.enabled", true);
-  const hasSeenWelcome = context.globalState.get<boolean>("throttle.welcome");
-  if (welcomeEnabled && !hasSeenWelcome) {
-    void vscode.window.showInformationMessage(
-      "Throttle：建议先 Spec → 再 Plan → 最后 Exec（可在行为面板查看引导）。"
-    );
-    void context.globalState.update("throttle.welcome", true);
-  }
+  void maybeShowOnboarding(context, output);
 
   context.subscriptions.push(
     output,
@@ -237,6 +236,7 @@ export function activate(context: vscode.ExtensionContext): void {
     clearBehaviorDisposable,
     manageMutesDisposable,
     preflightDisposable,
+    quickTourDisposable,
     configDisposable
   );
 }

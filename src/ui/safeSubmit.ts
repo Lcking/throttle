@@ -265,6 +265,14 @@ export async function safeSubmitFromClipboard(
   await runSafeSubmitWithPrompt(context, output, clipboard, clipboard);
 }
 
+export async function safeSubmitWithSample(
+  context: vscode.ExtensionContext,
+  output: vscode.OutputChannel,
+  samplePrompt: string
+): Promise<void> {
+  await runSafeSubmitWithPrompt(context, output, undefined, samplePrompt);
+}
+
 async function runSafeSubmitWithPrompt(
   context: vscode.ExtensionContext,
   output: vscode.OutputChannel,

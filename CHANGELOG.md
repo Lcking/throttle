@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.1
+
+- Added first-run onboarding prompt and a new Quick Tour command.
+- Clarified README + metadata positioning and included a 30-second demo.
+
 ## 0.4.0
 
 - Remember mode/tier per workspace with first-time prompts.

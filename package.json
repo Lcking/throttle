@@ -1,8 +1,8 @@
 {
   "name": "throttle",
   "displayName": "Throttle",
-  "description": "Mode-aware overkill detection for safe AI submit.",
-  "version": "0.4.0",
+  "description": "Pre-call AI prompt co-pilot that nudges on mode/model mismatch (not a rate limiter).",
+  "version": "0.4.1",
   "publisher": "Lcking",
   "license": "MIT",
   "repository": {
@@ -31,7 +31,8 @@
     "onCommand:throttle.clearLastHit",
     "onCommand:throttle.showBehaviorPanel",
     "onCommand:throttle.clearBehaviorStats",
-    "onCommand:throttle.preflight"
+    "onCommand:throttle.preflight",
+    "onCommand:throttle.quickTour"
   ],
   "contributes": {
     "commands": [
@@ -82,6 +83,10 @@
       {
         "command": "throttle.preflight",
         "title": "Throttle: Preflight"
+      },
+      {
+        "command": "throttle.quickTour",
+        "title": "Throttle: Quick Tour"
       }
     ],
     "keybindings": [
@@ -159,7 +164,7 @@
         "throttle.welcome.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Show the one-time welcome tip."
+          "description": "Show the one-time onboarding prompt."
         },
         "throttle.docDrift.enabled": {
           "type": "boolean",

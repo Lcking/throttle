@@ -1,13 +1,20 @@
 # Throttle
 
-> A runtime co-pilot for AI usage in your IDE.  
-> 一个运行时“副驾驶”：在你即将踩深油门之前，提醒你可能在错误的模式/模型上过度加速。
+> A pre-call AI co-pilot for VS Code. It warns when mode × intent × model tier look mismatched — before a costly call. Not a rate limiter.  
+> 一个运行时“副驾驶”：在你发送给 AI 之前提醒模式/模型错配，不是限流器。
 
-Throttle 是 IDE 里的 **pre-call co-pilot**：在你发送给 AI 之前，判断 mode × intent × budget/tier 是否错配。  
+## 10-second intro
+
+Throttle 在发送前做一次判断：当 **Plan + Reasoning + 执行意图** 组合过重时给出提醒。  
 它不阻断、不评判，默认 Continue，只在高置信度 + 高代价组合下提醒。
 
-30 秒 Demo：Plan + Opus（reasoning）+ “实现/写代码” → 弹出 Continue / 切模式 / 降档位 / 静音。  
-切到 Ask 或 light 后同样提示词不再提醒。
+## 30-second demo
+
+1) Run `Throttle: Set Mode` → choose `plan` + `reasoning`.
+2) Use a prompt like “Write code to implement a retry queue for failed jobs.”
+3) Run `Throttle: Safe Submit` (or `Cmd/Ctrl+Enter` for clipboard).
+4) You should see a non-blocking warning with Continue as primary.
+5) Switch to Ask or light and repeat; the warning should disappear.
 
 Throttle 不替代 specs / skills / subagent。它是运行时治理层，确保你的节奏更稳、更可控。
 
@@ -103,6 +110,7 @@ npm run build
 - `Throttle: Behavior Panel` – show behavior feedback panel
 - `Throttle: Clear Behavior Stats` – clear behavior stats
 - `Throttle: Preflight` – show current mode/tier, mutes, cooldowns
+- `Throttle: Quick Tour` – 30-second onboarding walkthrough
 
 ## Settings
 
@@ -131,7 +139,7 @@ npm run build
 
 Prompt tags (optional) override stored mode/tier:
 ```
-[mode:plan] [tier:reasoning] Write code to implement a rate limiter.
+[mode:plan] [tier:reasoning] Write code to implement a retry queue for failed jobs.
 mode=ask tier=light Explain this function.
 /plan /reasoning Implement a queue worker.
 ```
@@ -165,7 +173,7 @@ mode=ask tier=light Explain this function.
 ## Quick Start (30s)
 
 1) Run `Throttle: Set Mode` → choose `plan` + `reasoning`.
-2) In chat, write a prompt like “Write code to implement a rate limiter.”
+2) In chat, write a prompt like “Write code to implement a retry queue for failed jobs.”
 3) Copy it, then in the editor press `Cmd+Enter` (or `Ctrl+Enter`).
 4) You should see the non-blocking warning with Continue as primary.
 5) Switch to `ask` or `light` and repeat; the warning should disappear.
